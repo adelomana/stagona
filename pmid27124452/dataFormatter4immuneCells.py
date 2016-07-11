@@ -20,15 +20,18 @@ def entropyCalculator(v):
 # 0.1. user defined variables and paths
 dataFile='data/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-immuneCellsFile='data/formatted/immuneCells.4k.genes.data.csv'
-immuneCellsMetadataFile='data/formatted/immuneCells.4k.genes.metadata.csv'
-tumorCellsMetadataFile='data/formatted/tumorCells.4k.genes.metadata.csv'
+immuneCellsFile='data/formatted/immuneCells.xxk.genes.data.csv'
+immuneCellsMetadataFile='data/formatted/immuneCells.xxk.genes.metadata.csv'
+tumorCellsMetadataFile='data/formatted/tumorCells.xxk.genes.metadata.csv'
 
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
 
-entropyThreshold=1.17875354871  # 2k genes
-entropyThreshold=0.858869487712 # 4k genes
+entropyThreshold=1.17875354871   # 2k genes
+entropyThreshold=0.858869487712  # 4k genes
+entropyThreshold=0.467954173009  # 8k genes
+entropyThreshold=0.0549282251165 # 16k genes
+entropyThreshold=0.              # 23k genes 
 
 # 0.2. defining some variables
 allGeneNames=[]
@@ -157,12 +160,12 @@ size=4000-1
 threshold=entropies[size] # 0.858869487712
 print(size,threshold)
 
-size=8000-1
-threshold=entropies[size] # 0.468113680535
+size=8000
+threshold=entropies[size] # 0.467954173009
 print(size,threshold)
 
-size=16000-1
-threshold=entropies[size] # 0.0549282251165
+size=16000
+threshold=entropies[size] # 0.0548891548615
 print(size,threshold)
 
 
