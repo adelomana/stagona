@@ -1,15 +1,7 @@
 #################################################################
 # @Course: Systems Biology of Disease                           #
-# @Rscript: 2_melanoma_dimensionalityReduction.R                #
-# @Version: 1                                                   #
+# @Rscript: dimensionalityReduction.R                           #
 # @Author: Adrian de Lomana                                     #
-# @Sponsored by:                                                #
-# Institute for Systems Biology                                 #
-# 401 Terry Ave N                                               #
-# Seattle, WA 98109                                             #
-#                                                               #
-# Copyright (C) 2016 by Institute for Systems Biology,          #
-# Seattle, Washington, USA.  All rights reserved.               #
 #                                                               #
 # This source code is distributed under GNU GPL v3.0            #
 # the text of which is available at:                            #
