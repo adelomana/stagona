@@ -1,4 +1,5 @@
-# 0.1. loading external packages. if library is missing in your computer, use the R command: install.packages('name of the library')
+### loading external packages. if any of these libraries is missing in your computer, please use the R command: install.packages('name of the library')
+
 library(Rtsne) # implementation of t-SNE algorithm
 library(RColorBrewer) # library to access easily multiple colors for plotting
 library(scatterplot3d) # library for static 3D plotting
