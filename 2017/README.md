@@ -1,7 +1,7 @@
 # Introduction
 In this session we will apply unsupervised and supervised learning algorithms to single cell transcriptome data.
 Please make sure you have your our required R packages installed.
-Start RStudio and load the script __requisites.r__.
+Start RStudio and load the script _requisites.r_.
 
 ## Case 1. Unsupervised learning of melanoma malignant cells.
 We will study inter patient variability by defining clusters of malignant melanoma cells for different patients.
