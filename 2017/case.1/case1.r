@@ -19,7 +19,7 @@ library(rgl) # 3D Visualization Using OpenGL. If it fails in your Mac OS X, make
 library(tictoc) # a library to profile execution time
 
 # 0.2. defining working directory
-setwd('/Users/adriandelomana/gDrive/education/isb.summer.course.2016/src/melanoma/malignantCells/') # this line should be edited accordingly to your working directory. Type "getwd()" to know where you're at
+setwd('/Users/alomana/github/stagona/2017/case.1/') # this line should be edited accordingly to your working directory. Type "getwd()" to know where you're at
 
 # 1. reading the data and metadata for malignant cells
 print('reading and treating data...')
