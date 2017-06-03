@@ -17,7 +17,6 @@
 #   http://www.gnu.org/copyleft/lesser.html                     #
 #################################################################
 
-
 #####################################
 ### Libraries needed for analysis ###
 #####################################
@@ -26,12 +25,11 @@ library(scatterplot3d)
 library(rgl)
 library(Rtsne)
 
-
 ##############################
 ### Load data for analysis ###
 ##############################
 # Set working directory
-setwd('/Users/alomana/github/stagona/2017/case.2/')
+setwd('/Users/alomana/github/stagona/2017/case.2/') # this line should be edited accordingly to your working directory. Type "getwd()" to know where you're at
 
 # Read in expression data from GEO GSE57872 for glioblastoma single cells
 d1 = read.csv('data/GSE57872_GBM_data_matrix.csv', header=1, row.names=1)
