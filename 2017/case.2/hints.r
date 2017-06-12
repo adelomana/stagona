@@ -1,0 +1,4 @@
+
+
+closeAllConnections()
+rm(list=ls())
