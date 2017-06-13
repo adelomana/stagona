@@ -15,11 +15,10 @@ library(RColorBrewer) # library to access easily multiple colors for plotting
 library(scatterplot3d) # library for static 3D plotting
 library(rgl) # 3D Visualization Using OpenGL. If it fails in your Mac OS X, make sure you have X11 installed (https://www.xquartz.org/)
 library(tictoc) # a library to profile execution time
-library(MeanShift) # implementation of the mean shift clustering algorithm
 
 # 0.2. defining working directory
 setwd('/Users/alomana/github/stagona/2017/case.1/') # this line should be edited accordingly to your working directory. Type "getwd()" to know where you're at in the tree of directories
-setwd('/Users/adriandelomana/git/stagona/2017/case.1/')
+#setwd('/Users/adriandelomana/git/stagona/2017/case.1/')
 
 # 1. reading the data and metadata for malignant cells
 print('reading and treating data...')
@@ -90,5 +89,6 @@ play3d(spin3d(),duration=20)
 
 # 3. clustering in low dimentional space
 library(pvclust)
-fit <- pvclust(results2D$Y, method.hclust="ward",method.dist="euclidean")
+transposedObject=as.data.frame(t(results3D$Y)) # surprisingly pvclust clusters columns, not rows
+fit=pvclust(transposedObject,method.hclust="ward.D2",method.dist="euclidean",nboot=10)
 plot(fit) # dendogram with p values
