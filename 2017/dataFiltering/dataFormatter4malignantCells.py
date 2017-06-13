@@ -1,5 +1,5 @@
 #################################################################
-# @Course: Systems Biology of Disease                           #
+# @Course: Systems Biology of Disease 2017                      #
 # @Python Script: dataFormatter4malignantCells.py               #
 # @Author: Adrian de Lomana                                     #
 #                                                               #
@@ -10,6 +10,7 @@
 
 ###
 ### this script performs takes the original data from PMID 27124452 and formats the data appropriately for analysis of malignant cells
+### original data file found at https://www.ncbi.nlm.nih.gov/geo/query/acc.cgi?acc=GSE72056
 ###
 
 import sys,os,scipy,math,numpy
@@ -33,22 +34,25 @@ def entropyCalculator(v):
 resolutionLevel='8k'
 print('working with resolution level %s...'%resolutionLevel)
 entropyThresholds={}
-entropyThresholds['200']=1.76834015686
-entropyThresholds['2k']=1.16009025294
-entropyThresholds['4k']=0.847806758455  
-entropyThresholds['8k']=0.464102447814  
-entropyThresholds['16k']=0.0499331864791 
+entropyThresholds['200']=1.76282876498
+entropyThresholds['2k']=1.46854314041
+entropyThresholds['4k']=1.17578271113  
+entropyThresholds['8k']=0.669039127536  
+entropyThresholds['16k']=0.0493520022283
 entropyThresholds['23k']=0.
 
 dataFile='data/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-malignantCellsFile='data/formatted/tumorCells.%s.genes.data.csv'%resolutionLevel
-malignantCellsMetadataFile='data/formatted/tumorCells.%s.genes.tumorMetadata.csv'%resolutionLevel
+malignantCellsFile='data/formatted/malignant.%sgenes.data.csv'%resolutionLevel
+malignantCellsMetadataFile='data/formatted/malignant.%sgenes.tumorMetadata.csv'%resolutionLevel
 
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
 
-selectedTumors=['79','88','84','78','81','80']
+selectedTumors=['79','88','78','81','80','89']
+selectedTumorsRanks={}
+for patient in selectedTumors:
+    selectedTumorsRanks[patient]=0
 
 # 0.2. defining some variables
 allGeneNames=[]
@@ -97,6 +101,7 @@ with open(dataFile,'r') as f:
         if malignantLabels[i] == '2' and tumorLabels[i] in selectedTumors: 
             string2Write=cellIDs[i]+','+'Mel'+tumorLabels[i]+'\n'
             gMetaTumor.write(string2Write)
+            selectedTumorsRanks[tumorLabels[i]]=selectedTumorsRanks[tumorLabels[i]]+1
 
     # 2. dealing with data
 
@@ -112,7 +117,7 @@ with open(dataFile,'r') as f:
 
         trimmedExpression=[]
         for i in range(len(cellIDs)):
-            if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors:
+            if malignantLabels[i] == '2' and tumorLabels[i] in selectedTumors:
                 trimmedExpression.append(expression[i])
         expressionValues=[float(element) for element in trimmedExpression]
         s=entropyCalculator(expressionValues)
@@ -167,3 +172,5 @@ print(size,threshold)
 size=16000
 threshold=entropies[size] 
 print(size,threshold)
+
+print(selectedTumorsRanks)

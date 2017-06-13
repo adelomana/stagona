@@ -14,7 +14,8 @@ library(Rtsne) # implementation of t-SNE algorithm
 library(RColorBrewer) # library to access easily multiple colors for plotting
 library(scatterplot3d) # library for static 3D plotting
 library(rgl) # 3D Visualization Using OpenGL. If it fails in your Mac OS X, make sure you have X11 installed (https://www.xquartz.org/)
-library(tictoc) # a library to profile execution time
+library(tictoc) # library to profile execution time
+library(cluster) # library with functions to perform clustering
 
 # 0.2. defining working directory
 setwd('/Users/alomana/github/stagona/2017/case.1/') # this line should be edited accordingly to your working directory. Type "getwd()" to know where you're at in the tree of directories
@@ -88,7 +89,19 @@ legend3d('topright',legend=unique(tumorLabels),fill=plottingColors[unique(tumorL
 play3d(spin3d(),duration=20)
 
 # 3. clustering in low dimentional space
-library(pvclust)
-transposedObject=as.data.frame(t(results3D$Y)) # surprisingly pvclust clusters columns, not rows
-fit=pvclust(transposedObject,method.hclust="ward.D2",method.dist="euclidean",nboot=10)
-plot(fit) # dendogram with p values
+
+# 3.1. definining optimal number of clusters
+bestPartition=NbClust(results3D$Y,distance="euclidean",min.nc=2,max.nc=10,method="centroid",index="all")
+
+possibilities=c(4:6)
+results=c()
+for(k in possibilities) {
+  groups=kmeans(results2D$Y,centers=k)
+  results=c(results,groups)
+}
+print(results)
+silhouette()
+apply(possibilities,2,function(x) print(x))
+#transposedObject=as.data.frame(t(results3D$Y)) # surprisingly pvclust clusters columns, not rows
+#fit=pvclust(transposedObject,method.hclust="ward.D2",method.dist="euclidean",nboot=10)
+#plot(fit) # dendogram with p values
