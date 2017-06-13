@@ -41,10 +41,11 @@ entropyThresholds['8k']=0.669039127536
 entropyThresholds['16k']=0.0493520022283
 entropyThresholds['23k']=0.
 
-dataFile='data/original/GSE72056_melanoma_single_cell_revised_v2.txt'
+dataFile='../../../data/case.1/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-malignantCellsFile='data/formatted/malignant.%sgenes.data.csv'%resolutionLevel
-malignantCellsMetadataFile='data/formatted/malignant.%sgenes.tumorMetadata.csv'%resolutionLevel
+
+malignantCellsFile='../../../data/case.1/formatted/malignant.%sgenes.data.csv'%resolutionLevel
+malignantCellsMetadataFile='../../../data/case.1/formatted/malignant.%sgenes.tumorMetadata.csv'%resolutionLevel
 
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
