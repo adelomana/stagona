@@ -1,12 +1,12 @@
 #################################################################
 # @Course: Systems Biology of Disease 2017                                                                            
-# @Rscript: case1.r                                                                                                                  
+# @Rscript: unsupervised.r                                                                                                                  
 # @Author: Adrian de Lomana and Chris Plaisier                                                            
 # This source code is distributed under GNU GPL v3.0    
 #################################################################
 
 ###
-### This script performs data exploration and classification of  single cell transcriptomes from melanoma malignant cells.
+### This script performs data exploration and unsupervised learning from melanoma malignant single cell transcriptomes
 ###
 
 # 0.1. loading external packages. if library is missing in your computer, use the R command: install.packages('name of the library')
@@ -15,17 +15,21 @@ library(RColorBrewer) # library to access easily multiple colors for plotting
 library(scatterplot3d) # library for static 3D plotting
 library(rgl) # 3D Visualization Using OpenGL. If it fails in your Mac OS X, make sure you have X11 installed (https://www.xquartz.org/)
 library(tictoc) # library to profile execution time
-library(cluster) # library with functions to perform clustering
+library(NbClust) # library with functions to perform clustering
 
-# 0.2. defining working directory
-setwd('/Users/alomana/github/stagona/2017/case.1/') # this line should be edited accordingly to your working directory. Type "getwd()" to know where you're at in the tree of directories
-#setwd('/Users/adriandelomana/git/stagona/2017/case.1/')
+# 0.2. user-specific definition of paths.
+# these lines should be edited accordingly to your working directory. Type "getwd()" to know where you're at in the tree of directories
+sourceDirectory='/Users/alomana/github/stagona/2017/src/case.1/' # this line should be edited to match your hierarchy of dirs
+dataDirectory='/Users/alomana/github/stagona/2017/data/case.1/formatted/' # this line should be edited to match your hierarchy of dirs
+setwd(sourceDirectory) # no need to edit this line :-)
 
 # 1. reading the data and metadata for malignant cells
 print('reading and treating data...')
-originalData=read.csv('data/malignant.8k.genes.data.csv',header=TRUE,row.names=1)
-expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 977 observations in a ~8k dimensional space
-tumorMetadata=read.csv('data/malignant.8k.genes.tumorMetadata.csv',header=TRUE,row.names=1)
+dataFilePath=paste(dataDirectory,'malignant.8kgenes.data.csv',sep='')
+metadataFilePath=paste(dataDirectory,'malignant.8kgenes.tumorMetadata.csv',sep='')
+originalData=read.csv(dataFilePath,header=TRUE,row.names=1)
+expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 1,061 observations in a 8,000 dimensional space
+tumorMetadata=read.csv(metadataFilePath,header=TRUE,row.names=1)
 
 # 2. dimensionality reduction analysis
 # 2.0. setting some variables for plotting
@@ -88,20 +92,17 @@ plot3d(results3D$Y[,1],results3D$Y[,2],results3D$Y[,3],col=plottingColors[tumorL
 legend3d('topright',legend=unique(tumorLabels),fill=plottingColors[unique(tumorLabels)])
 play3d(spin3d(),duration=20)
 
-# 3. clustering in low dimentional space
+# 3. unsupervised learning: define the optimal number of clusters
 
-# 3.1. definining optimal number of clusters
-bestPartition=NbClust(results3D$Y,distance="euclidean",min.nc=2,max.nc=10,method="centroid",index="all")
+# 3.1. determine the optimal number of clusters
+clusteringResults=NbClust(results3D$Y,distance="euclidean",min.nc=2,max.nc=10,method="ward.D2",index="all")
+bestPartition=clusteringResults$Best.partition
 
-possibilities=c(4:6)
-results=c()
-for(k in possibilities) {
-  groups=kmeans(results2D$Y,centers=k)
-  results=c(results,groups)
-}
-print(results)
-silhouette()
-apply(possibilities,2,function(x) print(x))
-#transposedObject=as.data.frame(t(results3D$Y)) # surprisingly pvclust clusters columns, not rows
-#fit=pvclust(transposedObject,method.hclust="ward.D2",method.dist="euclidean",nboot=10)
-#plot(fit) # dendogram with p values
+# 3.2. plotting clustering results
+pdf('figure.cluster.3D.pdf')
+clusterLabels=c('cluster 1','cluster 2','cluster 3','cluster 4','cluster 5','cluster 6')
+plottingColors=brewer.pal(length(unique(bestPartition)),'Dark2')
+names(plottingColors)=clusterLabels
+scatterplot3d(results3D$Y[,1],results3D$Y[,2],results3D$Y[,3],color=plottingColors[bestPartition],xlab='tSNE Component 1',ylab='tSNE 2',zlab='tSNE 3',pch=19) 
+legend('topleft',legend=clusterLabels,fill=plottingColors[clusterLabels])
+dev.off() # don't forget this command, otherwise the PDF file of the figure won't be ready to be opened and you'll get an error

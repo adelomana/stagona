@@ -43,7 +43,6 @@ entropyThresholds['23k']=0.
 
 dataFile='../../../data/case.1/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-
 malignantCellsFile='../../../data/case.1/formatted/malignant.%sgenes.data.csv'%resolutionLevel
 malignantCellsMetadataFile='../../../data/case.1/formatted/malignant.%sgenes.tumorMetadata.csv'%resolutionLevel
 

@@ -40,11 +40,13 @@ entropyThresholds['8k']=0.464102447814
 entropyThresholds['16k']=0.0499331864791 
 entropyThresholds['23k']=0.               
 
-dataFile='data/original/GSE72056_melanoma_single_cell_revised_v2.txt'
+dataFile='../../../data/case.1/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-immuneCellsFile='data/formatted/nonMalignant.%s.genes.data.csv'%resolutionLevel
-immuneCellsMetadataFile='data/formatted/nonMalignant.%s.genes.immuneMetadata.csv'%resolutionLevel
-tumorCellsMetadataFile='data/formatted/nonMalignant.%s.genes.tumorMetadata.csv'%resolutionLevel
+immuneCellsFile='../../../data/case.1/formatted/nonMalignant.%sgenes.data.csv'%resolutionLevel
+immuneCellsMetadataFile='../../../data/case.1/formatted/nonMalignant.%sgenes.immuneMetadata.csv'%resolutionLevel
+tumorCellsMetadataFile='../../../data/case.1/formatted/nonMalignant.%sgenes.tumorMetadata.csv'%resolutionLevel
+centroidsFileName='../../../data/case.1/formatted/nonMalignant.immuneTypes.median.%sgenes.csv'%resolutionLevel
+
 
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
@@ -211,8 +213,7 @@ print(size,threshold)
 # 3. writing the median of each cell type
 cellTypeCodes=signature.keys()
 selectedGenes=signature['1'].keys()
-fileName='data/formatted/nonMalignant.median.%s.csv'%resolutionLevel
-g=open(fileName,'w')
+g=open(centroidsFileName,'w')
 for cellTypeCode in cellTypeCodes:
     g.write(',%s'%immuneCode[cellTypeCode])
 g.write('\n')
