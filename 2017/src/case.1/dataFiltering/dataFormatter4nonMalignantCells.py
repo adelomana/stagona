@@ -33,12 +33,12 @@ def entropyCalculator(v):
 resolutionLevel='8k'
 print('working with resolution level %s...'%resolutionLevel)
 entropyThresholds={}
-entropyThresholds['200']=1.76834015686
-entropyThresholds['2k']=1.16009025294
-entropyThresholds['4k']=0.847806758455  
-entropyThresholds['8k']=0.464102447814  
-entropyThresholds['16k']=0.0499331864791 
-entropyThresholds['23k']=0.               
+entropyThresholds['200']=1.76196273819
+entropyThresholds['2k']=1.15709452349
+entropyThresholds['4k']=0.841156501026  
+entropyThresholds['8k']=0.456759266159  
+entropyThresholds['16k']=0.0459240474862 
+entropyThresholds['23k']=0.
 
 dataFile='../../../data/case.1/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
@@ -51,7 +51,10 @@ centroidsFileName='../../../data/case.1/formatted/nonMalignant.immuneTypes.media
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
 
-selectedTumors=['53','58','60','72','74','78','79','80','81','84','88','89','94']
+selectedTumors=['53','58','60','72','74','79','80','84','88','89','94']
+selectedTumorsRanks={}
+for patient in selectedTumors:
+    selectedTumorsRanks[patient]=0
 
 immuneCode={}
 immuneCode['0']='no class'
@@ -117,20 +120,21 @@ with open(dataFile, 'r') as f:
 
     # adding cell labels
     for i in range(len(cellIDs)):
-        if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors:
+        if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors and immuneLabels[i] != '0':
             gI.write(',')
             gI.write(cellIDs[i])
     gI.write('\n')
 
     # adding tumor cell labels
     for i in range(len(cellIDs)):
-        if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors: 
+        if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors and immuneLabels[i] != '0': 
             string2Write=cellIDs[i]+','+'Mel'+tumorLabels[i]+'\n'
             gMetaTumor.write(string2Write)
+            selectedTumorsRanks[tumorLabels[i]]=selectedTumorsRanks[tumorLabels[i]]+1
     
     # adding immune cell type
     for i in range(len(cellIDs)):
-        if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors:
+        if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors and immuneLabels[i] != '0':
             string2Write=cellIDs[i]+','+immuneCode[immuneLabels[i]]+'\n'
             gMetaImmune.write(string2Write)
 
@@ -148,7 +152,7 @@ with open(dataFile, 'r') as f:
 
         trimmedExpression=[]
         for i in range(len(cellIDs)):
-            if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors:
+            if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors and immuneLabels[i] != '0':
                 trimmedExpression.append(expression[i])
         expressionValues=[float(element) for element in trimmedExpression]
         s=entropyCalculator(expressionValues)
@@ -171,7 +175,7 @@ with open(dataFile, 'r') as f:
         if duplicate == False and s > entropyThresholds[resolutionLevel]:
             gI.write(geneName)
             for i in range(len(cellIDs)):
-                if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors:
+                if malignantLabels[i] == '1' and tumorLabels[i] in selectedTumors and immuneLabels[i] != '0':
                     gI.write(',')
                     gI.write(expression[i])
 
@@ -228,5 +232,5 @@ for geneID in selectedGenes:
     g.write('\n')
 g.close()
 
-    
+print(selectedTumorsRanks)
 
