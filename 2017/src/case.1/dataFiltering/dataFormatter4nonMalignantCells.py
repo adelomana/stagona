@@ -30,7 +30,7 @@ def entropyCalculator(v):
     return s
 
 # 0.1. user defined variables and paths
-resolutionLevel='8k'
+resolutionLevel='23k'
 print('working with resolution level %s...'%resolutionLevel)
 entropyThresholds={}
 entropyThresholds['200']=1.76196273819

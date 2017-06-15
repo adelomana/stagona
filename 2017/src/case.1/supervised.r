@@ -22,7 +22,7 @@ print('reading and treating data...')
 dataFilePath=paste(dataDirectory,'nonMalignant.8kgenes.data.csv',sep='')
 metadataFilePath=paste(dataDirectory,'nonMalignant.8kgenes.tumorMetadata.csv',sep='')
 originalData=read.csv(dataFilePath,header=TRUE,row.names=1)
-expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 2,250 observations in a 8,000 dimensional space
+expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 2,249 observations in a 8,000 dimensional space
 tumorMetadata=read.csv(metadataFilePath,header=TRUE,row.names=1)
 
 # 2. dimensionality reduction of original data
@@ -33,7 +33,7 @@ names(plottingColors)=unique(tumorLabels)
 # 2.2. high resolution of t-SNE
 print('running 2D t-SNE with large perplexity...')
 tic()
-results2D=Rtsne(expression,dims=2,perplexity=50,verbose=TRUE,theta=0) # this step takes a bit more than a minute in my laptop...
+results2D=Rtsne(expression,dims=2,perplexity=50,verbose=TRUE,theta=0) # this step takes a bit more than 5 minutes in my laptop...
 toc()
 # plotting
 pdf('figure.non.malignantCells.tsne.2d.pdf')
