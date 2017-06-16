@@ -83,7 +83,7 @@ fitControl <- trainControl(method = "cv",
 learningMethod='rf'
 
 tic()
-model=train(miniProfiles,miniLabels,method=learningMethod,trControl = fitControl)
+model=train(miniProfiles,miniLabels,method=learningMethod,trControl = fitControl,verbose = FALSE)
 predictions=predict.train(object=model,expression,type="raw")
 toc()
 table(predictions)
