@@ -75,15 +75,13 @@ miniLabels=as.factor(immuneLabels$immune.label[1:400])
 # 3.2. perform learning
 library(parallel)
 library(doParallel)
-workingCores <- makeCluster(detectCores() - 1) # convention to leave 1 core for OS
+workingCores=makeCluster(detectCores()-1) # convention to leave 1 core for OS
 registerDoParallel(workingCores)
-fitControl <- trainControl(method = "cv",
-                           number = 10,
-                           allowParallel = TRUE)
+fitControl <- trainControl(method = "cv",number = 10,verboseIter=TRUE,allowParallel = TRUE)
 learningMethod='rf'
 
 tic()
-model=train(miniProfiles,miniLabels,method=learningMethod,trControl = fitControl,verbose = FALSE)
+model=train(miniProfiles,miniLabels,method=learningMethod,trControl=fitControl,verbose=FALSE)
 predictions=predict.train(object=model,expression,type="raw")
 toc()
 table(predictions)
