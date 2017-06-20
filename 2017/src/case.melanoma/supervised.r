@@ -17,10 +17,8 @@ library(scatterplot3d) # library for static 3D plotting
 library(caret) # a nice library to consider for supervised learning
 
 # 0.2. user-specific definition of paths.
-# these lines should be edited accordingly to your working directory. Type "getwd()" to know where you're at in the tree of directories
-sourceDirectory='/Users/alomana/github/stagona/2017/src/case.1/' # this line should be edited to match your hierarchy of dirs
-dataDirectory='/Users/alomana/github/stagona/2017/data/case.1/formatted/' # this line should be edited to match your hierarchy of dirs
-setwd(sourceDirectory) # no need to edit this line :-)
+# please navigate into "case.melanoma" through the "Files" tab on the bottom right, and set that directory as your working directory
+dataDirectory='../../data/case.melanoma/formatted/' 
 
 # 1. reading the data and metadata for malignant cells
 print('reading and treating data...')
@@ -78,11 +76,8 @@ predictions=predict.train(object=model,expression,type="raw")
 toc()
 table(predictions)
 
-# 3.3. describe learning: error and features (gene markers, possibly a heatmap of markers)
-importance <- varImp(model, scale = TRUE)
-
 # 3.3. plotting the results
-figureFileName=paste('classification.',learningMethod,'.pdf',sep='')
+figureFileName=paste('figure.non.malignantCells.classification.',learningMethod,'.pdf',sep='')
 pdf(figureFileName)
 predictedLabels=as.character(predictions)
 plottingColors=brewer.pal(length(unique(predictedLabels)),'Dark2')
@@ -91,10 +86,10 @@ plot(results2D$Y,main='learned classification',col=plottingColors[predictedLabel
 legend('bottomleft',legend=unique(predictedLabels),fill=plottingColors[unique(predictedLabels)])
 dev.off() # don't forget this command, otherwise the PDF file of the figure won't be ready
 
-
-# define how much error you have and the most useful features http://blog.revolutionanalytics.com/2015/12/caret-genetic.html
-# consider pca PC200, then learning then biomarkers by ranked t-test
-
+# 3.4. describe learning: error and features (gene markers, possibly a heatmap of markers)
+# for students, consider pca and learning biomarkers in 200D, then define biomarkers through t-test
+vimp <- varImp(model, scale = TRUE)
+vimp <- vimp[order(vimp$Overall,decreasing = TRUE),drop = FALSE]
 
 
 
