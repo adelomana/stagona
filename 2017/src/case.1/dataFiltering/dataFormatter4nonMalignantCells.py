@@ -62,10 +62,10 @@ for patient in selectedTumors:
 
 immuneCode={}
 immuneCode['0']='no class'
-immuneCode['1']='T-cells'
-immuneCode['2']='B-cells'
+immuneCode['1']='Tcells'
+immuneCode['2']='Bcells'
 immuneCode['3']='Macrophages'
-immuneCode['4']='Endo.'
+immuneCode['4']='Endo'
 immuneCode['5']='CAFs'
 immuneCode['6']='NK'
 

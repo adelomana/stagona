@@ -24,3 +24,13 @@ nonMalignant.23kgenes.tumorMetadata.csv filter=lfs diff=lfs merge=lfs -text
 nonMalignant.2kgenes.data.csv filter=lfs diff=lfs merge=lfs -text
 nonMalignant.2kgenes.immuneMetadata.csv filter=lfs diff=lfs merge=lfs -text
 nonMalignant.4kgenes.immuneMetadata.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.2kgenes.immuneMetadata.prediction.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.2kgenes.tumorMetadata.prediction.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.8kgenes.immuneMetadata.learning.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.2kgenes.data.learning.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.2kgenes.data.prediction.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.2kgenes.immuneMetadata.learning.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.8kgenes.tumorMetadata.prediction.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.8kgenes.data.learning.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.8kgenes.data.prediction.csv filter=lfs diff=lfs merge=lfs -text
+nonMalignant.8kgenes.immuneMetadata.prediction.csv filter=lfs diff=lfs merge=lfs -text
