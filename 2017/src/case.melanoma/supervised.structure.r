@@ -12,6 +12,7 @@
 # 0.1. loading external packages. if library is missing in your computer, use the R command: install.packages('name of the library')
 
 # 0.2. user-specific definition of paths.
+# please navigate into "case.melanoma" through the "Files" tab on the bottom right, and set that directory as your working directory
 
 # 1. reading the data and metadata for malignant cells
 
