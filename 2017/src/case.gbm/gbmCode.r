@@ -98,23 +98,73 @@ legend3d('topright', legend=unique(colNames1), fill=col1[unique(colNames1)]) # D
 play3d(spin3d(), duration=20)
 # Need to close window by hand
 
-
 #############################
 ### supervised learning ###
 #############################
 
-# separate training and testing data sets
+##############################
+### Single cell predictor ###
+#############################
+# Load up TCGA GBM sub-type centroids
+centroids1 = read.csv('../../data/case.gbm/gbmTCGACentroids.csv',header=1,row.names=1)
 
-#  perform learning
+# Comupte 
+scp1 = cor(centroids1,d1[rownames(centroids1),],method='spearman')
+scp1_calls = sapply(colnames(scp1), function(x) { rownames(scp1)[which(scp1[,x]==max(scp1[,x]))] })
+table(scp1_calls)
 
-# plotting the results
 
-# confusion matrix and classification features
+######################################
+### Significance of predcitions by ###
+### resampling of genes, and calls ###
+### based on significance.         ###
+######################################
+permutations = 100
+m1 = matrix(nrow=ncol(scp1), ncol=9)
+rownames(m1) = colnames(scp1)
+colnames(m1) = c(paste(rep(rownames(scp1),each=2),c('cor','p_value'),sep='.'),'Calls')
+# For each single cell, and bulk tumor
+tic() # this computation takes about a minute in a desktop computer
+for(i in colnames(scp1)) {
+  calls = c()
+  sub = sapply(1:permutations, function(j) { cor(centroids1, d1[sample(rownames(d1),nrow(centroids1)), i], method='spearman') })
+  for(j in 1:4) {
+    m1[i,(j*2-1)] = scp1[j,i]
+    m1[i,(j*2)] = length(which(sub[j,] >= scp1[j,i]))/permutations
+    if(m1[i,(j*2)]<=0.05) {
+      calls = c(calls,rownames(scp1)[j])
+    }
+  }
+  if(length(calls)==0) {
+    calls = c('NA')
+  }
+  m1[i,9] = paste(calls,collapse=' ')
+}     
 
-# confusion matrix
+table(m1[,9])
+write.csv(m1,'samplingResults.csv')
+toc()
 
-# list best genes for classification
+#####################################
+### Making a table of percentages ###
+#####################################
+d2 = d1[,1:430]
+colNames1 = sapply(colnames(d2), function(x) { strsplit(x,'_')[[1]][1] } )
+colNames1[which(colNames1=='MGH264')] = 'MGH26'
+m2 = matrix(ncol=length(unique(m1[,9])),nrow=length(unique(colNames1)))
+rownames(m2) = unique(colNames1)
+colnames(m2) = unique(m1[,9])
+for(i in rownames(m2)) {
+  for(j in colnames(m2)) {
+    m2[i,j] = sum(m1[which(colNames1==i),9]==j)/length(m1[which(colNames1==i),9])
+  }
+}
 
-# best classifiers distributions
+par(mar=c(3, 4, 4, 2))
+col2 = brewer.pal(length(unique(colnames(m2))),"Paired")
+names(col2) = unique(colnames(m2))
+pdf('subtypesSingleCells.pdf')
+barplot(t(m2), beside=T, legend.text=rownames(t(m2)), col=col2, ylim=c(0,1), ylab='Percent of Cells')
+dev.off()
 
 
