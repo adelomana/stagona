@@ -14,7 +14,7 @@ library(Rtsne) # implementation of t-SNE algorithm
 library(RColorBrewer) # library to access easily multiple colors for plotting
 library(tictoc) # library to profile execution time
 library(scatterplot3d) # library for static 3D plotting
-library(caret) # a nice library to consider for supervised learning
+library(randomForest) # a library that includes an implementation of a random forest algorithm
 
 # 0.2. user-specific definition of paths.
 # please navigate into "case.melanoma" through the "Files" tab on the bottom right, and set that directory as your working directory
@@ -25,7 +25,8 @@ print('reading and treating data...')
 dataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.data.prediction.csv',sep='')
 metadataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.tumorMetadata.prediction.csv',sep='')
 originalData=read.csv(dataFilePath,header=TRUE,row.names=1)
-expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 2,249 observations in a 8,000 dimensional space
+expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 2,249 observations in a 2,000 dimensional space
+names(expression)=make.names(names(expression))
 tumorMetadata=read.csv(metadataFilePath,header=TRUE,row.names=1)
 
 # 2. dimensionality reduction of original data
@@ -44,40 +45,26 @@ plot(results2D$Y,main='tSNE of non malignant cells, p=50',col=plottingColors[tum
 legend('topright',legend=unique(tumorLabels),fill=plottingColors[unique(tumorLabels)])
 dev.off() # don't forget this command, otherwise the PDF file of the figure won't be ready to be opened and you'll get an error
 
-######## to be removed
-dataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.immuneMetadata.prediction.csv',sep='')
-immuneMetadata=read.csv(dataFilePath,header=TRUE,row.names=1)
-labels=as.character(immuneMetadata$immune.label)
-plottingColors=brewer.pal(length(unique(labels)),'Dark2')
-names(plottingColors)=unique(labels)
-pdf('figure.non.malignantCells.immuneLabels.pdf')
-plot(results2D$Y,main='tSNE of non malignant cells, p=50',col=plottingColors[labels],pch=19,xlab='tSNE Component 1',ylab='tSNE Component 2')
-legend('topright',legend=unique(labels),fill=plottingColors[unique(labels)])
-dev.off() # don't forget this command, otherwise the PDF file of the figure won't be ready
-#############
-
 # 3. supervised learning on cell type classify data
 # 3.1. read prior information about cell types, both profiles and labels
 immuneProfilesDataFile=paste(dataDirectory,'nonMalignant.2kgenes.data.learning.csv',sep='')
 rawData=read.csv(immuneProfilesDataFile,row.names=1,header=T)
 immuneProfiles=as.data.frame(t(rawData))
+names(immuneProfiles)=make.names(names(immuneProfiles))
 
 knownImmuneLabelsFile=paste(dataDirectory,'nonMalignant.2kgenes.immuneMetadata.learning.csv',sep='')
 immuneLabels=read.csv(knownImmuneLabelsFile,row.names=1,header=T)
 knownLabels=immuneLabels$immune.label
 
 # 3.2. perform learning
-fitControl=trainControl(method="cv",number=10,verboseIter=TRUE,classProbs=TRUE)
-learningMethod='rFerns'
-
-tic()
-model=train(immuneProfiles,knownLabels,method=learningMethod,trControl=fitControl,verbose=TRUE) # tuneLength = 4,metric = 'ROC'
-predictions=predict.train(object=model,expression,type="raw")
+tic() # this step takes around 2 minutes in my laptop
+model=randomForest(as.factor(knownLabels)~.,data=immuneProfiles,importance=T,proximity=T)
+predictions=predict(model,newdata=expression,type="response")
 toc()
 table(predictions)
 
 # 3.3. plotting the results
-figureFileName=paste('figure.non.malignantCells.classification.',learningMethod,'.pdf',sep='')
+figureFileName=paste('figure.non.malignantCells.classification.rf','.pdf',sep='')
 pdf(figureFileName)
 predictedLabels=as.character(predictions)
 plottingColors=brewer.pal(length(unique(predictedLabels)),'Dark2')
@@ -86,14 +73,22 @@ plot(results2D$Y,main='learned classification',col=plottingColors[predictedLabel
 legend('bottomleft',legend=unique(predictedLabels),fill=plottingColors[unique(predictedLabels)])
 dev.off() # don't forget this command, otherwise the PDF file of the figure won't be ready
 
-# 3.4. describe learning: error and features (gene markers, possibly a heatmap of markers)
-# for students, consider pca and learning biomarkers in 200D, then define biomarkers through t-test
-vimp <- varImp(model, scale = TRUE)
-vimp <- vimp[order(vimp$Overall,decreasing = TRUE),drop = FALSE]
+# 3.4. confusion matrix  and features (gene markers, possibly a heatmap of markers)
 
+# confusion matrix
+print(model$confusion)
 
+# list best genes for classification
+nfeat=35
+rankedImportance=model$importance[order(model$importance[,8],decreasing = TRUE),]
+top=rankedImportance[1:nfeat,]
+print(top)
+varImpPlot(model,type=2,n.var=nfeat, main='Variable Importance for Top 25 Predictors\n(Mean decrease in Gini node impurity)')
 
-
-
+# best classifiers distributions
+boxplot(immuneProfiles$CD3D~knownLabels)
+boxplot(immuneProfiles$CD74~knownLabels)
+boxplot(immuneProfiles$HLA.DRA~knownLabels)
+boxplot(immuneProfiles$IRF8~knownLabels)
 
 

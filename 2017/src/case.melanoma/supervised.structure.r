@@ -21,11 +21,22 @@
 # 3.1. read prior information about cell types, both profiles and labels
 
 # 3.2. perform learning
-# strongly suggest random ferns, they are a good comprimise between accuracy and efficiency
 
 # 3.3. plotting the results
 
-# 3.4. quantify the model: model error and features for cell type
+# 3.3. plotting the results
+
+# 3.4. confusion matrix and classification features
+
+# confusion matrix
+
+# list best genes for classification
+
+# best classifiers distributions
+
+
+
+
 
 
 
