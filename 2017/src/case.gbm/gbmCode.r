@@ -24,6 +24,7 @@ library(RColorBrewer)
 library(scatterplot3d)
 library(rgl)
 library(Rtsne)
+library(tictoc)
 
 ##############################
 ### Load data for analysis ###

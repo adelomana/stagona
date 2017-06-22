@@ -18,10 +18,8 @@ library(tictoc) # library to profile execution time
 library(NbClust) # library with functions to perform clustering
 
 # 0.2. user-specific definition of paths.
-# these lines should be edited accordingly to your working directory. Type "getwd()" to know where you're at in the tree of directories
-sourceDirectory='/Users/alomana/github/stagona/2017/src/case.1/' # this line should be edited to match your hierarchy of dirs
-dataDirectory='/Users/alomana/github/stagona/2017/data/case.1/formatted/' # this line should be edited to match your hierarchy of dirs
-setwd(sourceDirectory) # no need to edit this line :-)
+# please navigate into "case.melanoma" through the "Files" tab on the bottom right, and set that directory as your working directory
+dataDirectory='../../data/case.melanoma/formatted/' 
 
 # 1. reading the data and metadata for malignant cells
 print('reading and treating data...')

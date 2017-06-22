@@ -22,8 +22,8 @@ dataDirectory='../../data/case.melanoma/formatted/'
 
 # 1. reading the data and metadata for malignant cells
 print('reading and treating data...')
-dataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.data.prediction.csv',sep='')
-metadataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.tumorMetadata.prediction.csv',sep='')
+dataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.data.testing.csv',sep='')
+metadataFilePath=paste(dataDirectory,'nonMalignant.2kgenes.tumorMetadata.testing.csv',sep='')
 originalData=read.csv(dataFilePath,header=TRUE,row.names=1)
 expression=as.data.frame(t(originalData)) # transposing the original data into the appropriate form: 2,249 observations in a 2,000 dimensional space
 names(expression)=make.names(names(expression))
@@ -47,12 +47,12 @@ dev.off() # don't forget this command, otherwise the PDF file of the figure won'
 
 # 3. supervised learning on cell type classify data
 # 3.1. read prior information about cell types, both profiles and labels
-immuneProfilesDataFile=paste(dataDirectory,'nonMalignant.2kgenes.data.learning.csv',sep='')
+immuneProfilesDataFile=paste(dataDirectory,'nonMalignant.2kgenes.data.training.csv',sep='')
 rawData=read.csv(immuneProfilesDataFile,row.names=1,header=T)
 immuneProfiles=as.data.frame(t(rawData))
 names(immuneProfiles)=make.names(names(immuneProfiles))
 
-knownImmuneLabelsFile=paste(dataDirectory,'nonMalignant.2kgenes.immuneMetadata.learning.csv',sep='')
+knownImmuneLabelsFile=paste(dataDirectory,'nonMalignant.2kgenes.immuneMetadata.training.csv',sep='')
 immuneLabels=read.csv(knownImmuneLabelsFile,row.names=1,header=T)
 knownLabels=immuneLabels$immune.label
 
