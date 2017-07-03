@@ -1,3 +1,6 @@
 # stagona
-Teaching materials for quantitative analysis of single cell
-transcriptome profiles.
+Teaching materials for quantitative analysis of transcriptome profiles.
+
+### ISB Summer Course
+
+### Transcriptomics Tutorial
