@@ -115,6 +115,8 @@ kallistoExecutable='/proj/omics4tb/alomana/software/kallisto_linux-v0.43.1/kalli
 # 0.3. miscellanea of user defined variables
 numberOfThreads=16 # maximum number of threads in osiris is 16
 
+sys.exit()
+
 # 1. cleaning reads
 print 'cleaning reads...'
 
@@ -142,6 +144,8 @@ for name in names:
     os.system(command)
     print
 
+sys.exit()
+
 # 2. command to run STAR
 print
 print 'mapping reads...'
@@ -164,10 +168,14 @@ print cmd
 print
 os.system(cmd)
 
+sys.exit()
+
 # 2.2. actual mapping of reads
 print '\t mapping each sample to the genome...'
 for name in names:
     STARcalling(name)
+
+sys.exit()
 
 # 3. quantify alignments with cufflinks
 print
@@ -181,11 +189,14 @@ print 'calling cuffquant...'
 for inputFile in bamFiles:
     cuffquantCaller(inputFile)
 
+sys.exit()
+
 # 3.2 calling cuffnorm
 print
 print 'calling cuffnorm...'
 cuffnormCaller()
 
+sys.exit()
 
 # 4. running kallisto
 print
@@ -197,6 +208,8 @@ print
 print cmd
 print
 os.system(cmd)
+
+sys.exit()
 
 # 4.2. quantifying expression
 print
