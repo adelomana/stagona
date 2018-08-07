@@ -1,6 +1,8 @@
 # stagona
 Teaching materials for quantitative analysis of transcriptome profiles.
 
-### ISB Summer Course
+### ISC
+ISB Summer Course.
 
-### Transcriptomics Tutorial
+### TT
+Transcriptomics tutorial.
