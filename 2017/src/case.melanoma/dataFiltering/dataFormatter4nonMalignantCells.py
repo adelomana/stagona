@@ -30,24 +30,24 @@ def entropyCalculator(v):
     return s
 
 # 0.1. user defined variables and paths
-resolutionLevel='8k'
+resolutionLevel='2k'
 print('working with resolution level %s...'%resolutionLevel)
 entropyThresholds={}
 entropyThresholds['200']=1.76149386213
-entropyThresholds['2k']=1.15216894394
+entropyThresholds['2k']=1.1521689439429499
 entropyThresholds['4k']=0.837034672379  
 entropyThresholds['8k']=0.452935086356  
 entropyThresholds['16k']=0.0459240474862 
 entropyThresholds['23k']=0.
 
-dataFile='../../../data/case.1/original/GSE72056_melanoma_single_cell_revised_v2.txt'
+dataFile='/Users/adriandelomana/scratch/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-immuneCellsDataFileLearning='../../../data/case.1/formatted/nonMalignant.%sgenes.data.learning.csv'%resolutionLevel
-immuneCellsMetadataFileLearning='../../../data/case.1/formatted/nonMalignant.%sgenes.immuneMetadata.learning.csv'%resolutionLevel
+immuneCellsDataFileLearning='/Users/adriandelomana/scratch/nonMalignant.%sgenes.data.learning.csv'%resolutionLevel
+immuneCellsMetadataFileLearning='/Users/adriandelomana/scratch/nonMalignant.%sgenes.immuneMetadata.learning.csv'%resolutionLevel
 
-immuneCellsDataFileTesting='../../../data/case.1/formatted/nonMalignant.%sgenes.data.prediction.csv'%resolutionLevel
-tumorCellsMetadataFileTesting='../../../data/case.1/formatted/nonMalignant.%sgenes.tumorMetadata.prediction.csv'%resolutionLevel
-immuneCellsMetadataFileTesting='../../../data/case.1/formatted/nonMalignant.%sgenes.immuneMetadata.prediction.csv'%resolutionLevel
+immuneCellsDataFileTesting='/Users/adriandelomana/scratch/nonMalignant.%sgenes.data.prediction.csv'%resolutionLevel
+tumorCellsMetadataFileTesting='/Users/adriandelomana/scratch/nonMalignant.%sgenes.tumorMetadata.prediction.csv'%resolutionLevel
+immuneCellsMetadataFileTesting='/Users/adriandelomana/scratch/nonMalignant.%sgenes.immuneMetadata.prediction.csv'%resolutionLevel
 
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
