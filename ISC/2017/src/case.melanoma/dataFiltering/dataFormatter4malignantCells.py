@@ -31,20 +31,20 @@ def entropyCalculator(v):
     return s
 
 # 0.1. user defined variables and paths
-resolutionLevel='8k'
+resolutionLevel='2k'
 print('working with resolution level %s...'%resolutionLevel)
 entropyThresholds={}
 entropyThresholds['200']=1.76282876498
-entropyThresholds['2k']=1.46854314041
+entropyThresholds['2k']=1.4685431404109979
 entropyThresholds['4k']=1.17578271113  
-entropyThresholds['8k']=0.669039127536  
+entropyThresholds['8k']=0.6690391275356948  
 entropyThresholds['16k']=0.0493520022283
 entropyThresholds['23k']=0.
 
-dataFile='../../../data/case.1/original/GSE72056_melanoma_single_cell_revised_v2.txt'
+dataFile='/Users/alomana/Google Drive File Stream/My Drive/education/ISC/2018/shared/ISB Summer Course 2018/Sandbox for afternoon leaders/case.melanoma/original/GSE72056_melanoma_single_cell_revised_v2.txt'
 
-malignantCellsFile='../../../data/case.1/formatted/malignant.%sgenes.data.csv'%resolutionLevel
-malignantCellsMetadataFile='../../../data/case.1/formatted/malignant.%sgenes.tumorMetadata.csv'%resolutionLevel
+malignantCellsFile='/Users/alomana/scratch/malignant.%sgenes.data.csv'%resolutionLevel
+malignantCellsMetadataFile='/Users/alomana/scratch/malignant.%sgenes.tumorMetadata.csv'%resolutionLevel
 
 testingNumCells=5000 # there is a total of 4645 cells, so if this number is larger than that, all cells will be included
 testingNumVar=25000 # there is a total of 23686 genes, so if this number is larger than that, all genes will be included
